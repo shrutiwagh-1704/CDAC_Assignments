@@ -1,0 +1,111 @@
+Ass_8
+
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | New York  | 0.10 |
++------+---------+-----------+------+
+5 rows in set (0.04 sec)
+
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.07 sec)
+
+
+Q.Assume each salesperson has a 12% commission. Write a query on the orders 
+  table that will produce the order number, the salesperson number, and the amount 
+  of the salesperson’s commission for that order. 
+mysql> select Onum,Snum,Amt*0.12 as 'commission_amt'
+    -> from orders;
++------+------+----------------+
+| Onum | Snum | commission_amt |
++------+------+----------------+
+| 3001 | 1007 |           2.24 |
+| 3003 | 1001 |          92.06 |
+| 3002 | 1004 |         228.01 |
+| 3005 | 1002 |         619.25 |
+| 3006 | 1007 |         131.78 |
+| 3009 | 1003 |         205.59 |
+| 3009 | 1003 |         205.59 |
+| 3007 | 1002 |           9.09 |
+| 3008 | 1001 |         566.76 |
+| 3010 | 1002 |         157.19 |
+| 3011 | 1001 |        1187.03 |
++------+------+----------------+
+11 rows in set (0.09 sec)
+
+
+
+Q.Write a query on the Customers table that will find the highest rating in each city. 
+Put the output in this form: 
+For the city (city), the highest rating is : (rating).
+
+mysql> select city as 'for the city' ,max(rating) as 'highest rating'from customers
+    -> group by city;
++--------------+----------------+
+| for the city | highest rating |
++--------------+----------------+
+| Londan       |            100 |
+| Rome         |            200 |
+| San Jose     |            300 |
+| Berlin       |            300 |
++--------------+----------------+
+4 rows in set (0.00 sec)
+
+Q.Write a query that lists customers in descending order of rating. Output the rating 
+field first, followed by the customer’s name and number. 
+mysql> select rating,cname,cnum 
+    -> from customers
+    -> order by rating desc;
++--------+----------+------+
+| rating | cname    | cnum |
++--------+----------+------+
+|    300 | Grass    | 2004 |
+|    300 | Cisneros | 2008 |
+|    200 | Giovanni | 2002 |
+|    200 | Liu      | 2003 |
+|    100 | Hoffman  | 2001 |
+|    100 | Clemens  | 2006 |
+|    100 | Pereira  | 2007 |
++--------+----------+------+
+7 rows in set (0.00 sec)
+
+Q.Write a query that totals the orders for each day and places the results in 
+descending order. 
+mysql> select Odate,count(Onum) from orders
+    -> group by Odate
+    -> order by count(Onum) desc;
++------------+-------------+
+| Odate      | count(Onum) |
++------------+-------------+
+| 1990-10-03 |           5 |
+| 1990-10-04 |           3 |
+| 1990-10-06 |           2 |
+| 1990-10-05 |           1 |
++------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/Ass_9.txt;

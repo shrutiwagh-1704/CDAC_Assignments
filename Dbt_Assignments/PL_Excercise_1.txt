@@ -1,0 +1,165 @@
+Q.Write a program that computes the perimeter and the area of a rectangle. Define 
+your own values for the length and width. (Assuming that L and W are the length 
+and width of the rectangle, Perimeter = 2*(L+W) and Area = L*W. 
+
+mysql> delimiter //
+mysql> create procedure calc_metric_2(L int, W int)
+    -> begin
+    -> declare perimeter int;
+    -> declare area int;
+    -> set perimeter=2*(L+W) ;
+    -> set area=L*W;
+    -> select perimeter as Perimeter ,area as Area ;
+    -> end //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call cacl_metric_2(5,3);
+    -> //
+ERROR 1305 (42000): PROCEDURE kharghar.cacl_metric_2 does not exist
+mysql> call  calc_metric_2(5,2);
+    -> //
++-----------+------+
+| Perimeter | Area |
++-----------+------+
+|        14 |   10 |
++-----------+------+
+1 row in set (0.07 sec)
+
+
+Write a program that declares an integer variable called num, assigns a value to it, 
+and computes and inserts into the tempp table the value of the variable itself, its 
+square, and its cube.  
+
+mysql> delimiter //
+mysql> create procedure calc_vals()
+    -> begin
+    -> declare num int;
+    -> declare sq int;
+    -> declare cb int;
+    -> set num=5;
+    -> set sq=num*num;
+    -> set cb=num*num*num;
+    -> insert into tempp values(sq,cb);
+    -> end //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from tempp;
+    -> //
+Empty set (0.00 sec)
+
+mysql> delimiter ;
+mysql> select * from tempp;
+Empty set (0.00 sec)
+
+mysql> call calc_vals();
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from tempp;
++--------+----------+
+| square | cube_val |
++--------+----------+
+|     25 |      125 |
++--------+----------+
+1 row in set (0.00 sec)
+
+
+Q.Convert a temperature in Fahrenheit (F) to its equivalent in Celsius (C) and vice 
+versa. The required formulae are:-  C= (F-32)*5/9    
+F= 9/5*C + 32   
+mysql> delimiter //
+mysql> create procedure change_temp(F int,C int)
+    -> begin
+    -> declare F_to_C int;
+    -> declare C_to_F int;
+    -> set F_to_C=(F-32)*5/9;
+    -> set C_to_F=(9/5*C +32);
+    -> select F as fahrenhit ,F_to_C as F_to_C,C as Celcious ,C_to_F as C_to_F;
+    -> end //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> call change_temp(90,33);
+    -> //
++-----------+--------+----------+--------+
+| fahrenhit | F_to_C | Celcious | C_to_F |
++-----------+--------+----------+--------+
+|        90 |     32 |       33 |     91 |
++-----------+--------+----------+--------+
+1 row in set (0.02 sec)
+
+Q.Convert a number of inches into yards, feet, and inches. For example, 124 inches 
+equals 3 yards, 1 foot, and 4 inches.    
+mysql> delimiter //
+mysql> create procedure units(I int)
+    -> begin
+    -> declare yard int;
+    -> declare foot int;
+    -> declare rem1 int;
+    -> declare rem2 int;
+    -> declare inches int;
+    -> set yard=I/36;
+    -> set rem1=I%36;
+    -> set foot=rem1/12;
+    -> set rem2=rem1%12;
+    -> set inches=rem2;
+    -> select yard as yard ,foot as foot,inches as inches;
+    -> end //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call units(124);
+    -> //
++------+------+--------+
+| yard | foot | inches |
++------+------+--------+
+|    3 |    1 |      4 |
++------+------+--------+
+1 row in set (0.00 sec)
+
+Q.Write a program that enables a user to input an integer. The program should then 
+state whether the integer is evenly divisible by 5.    
+mysql>
+mysql> CREATE PROCEDURE check_divisible(IN num INT)
+    -> BEGIN
+    ->     IF MOD(num, 5) = 0 THEN
+    ->         SELECT 'Divisible by 5' AS Result;
+    ->     ELSE
+    ->         SELECT 'Not divisible by 5' AS Result;
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL check_divisible(15);
++----------------+
+| Result         |
++----------------+
+| Divisible by 5 |
++----------------+
+1 row in set (0.02 sec)
+
+Q. Your block should read in two real numbers and tell whether the product of the two 
+numbers is equal to or greater than 100.  
+mysql> delimiter //
+mysql> create procedure check_product(x int,y int)
+    -> begin
+    -> declare product int;
+    -> set product=x*y;
+    -> if product>100 then
+    -> select 'greater than 100' as result;
+    -> else
+    -> select 'less than 100' as result;
+    -> end if ;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call check_product(10,11);
+    -> //
++------------------+
+| result           |
++------------------+
+| greater than 100 |
++------------------+
+1 row in set (0.00 sec)
+
+

@@ -1,0 +1,75 @@
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.02 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+Q. Write a query that uses a subquery to obtain all orders for the customer named 
+Cisneros. Assume you do not know his customer number (cnum). 
+mysql> select Onum from orders 
+    -> where cnum=(select cnum from customers where cname='Cisneros');
++------+
+| Onum |
++------+
+| 3001 |
+| 3006 |
++------+
+2 rows in set (0.00 sec)
+
+Q. Write a query that produces the names and ratings of all customers who have 
+   above-average orders.
+mysql> select cname ,rating from customers join orders 
+    -> on customers.cnum=orders.cnum 
+    -> where amt>(select avg(amt) from orders); 
++---------+--------+
+| cname   | rating |
++---------+--------+
+| Liu     |    200 |
+| Clemens |    100 |
+| Clemens |    100 |
++---------+--------+
+3 rows in set (0.10 sec)
+
+
+
+Q. Write a query that selects the total amount in orders for each salesperson for 
+   whom this total is greater than the amount of the largest order in the table. mysql> select snum,sum(Amt) from orders 
+    -> group by snum 
+    -> having sum(amt) > (select max(amt) from orders);
++------+----------+
+| snum | sum(Amt) |
++------+----------+
+| 1001 | 15382.07 |
++------+----------+
+1 row in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/Ass_12.txt;

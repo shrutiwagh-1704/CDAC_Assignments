@@ -1,0 +1,338 @@
+mysql> create table SEMP(
+    -> EMPNO char(4),
+    -> EMPNAME char(20),
+    -> BASIC float,
+    -> DEPTNO char(2),
+    -> DEPTHEAD char(4)
+    -> );
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> insert into SEMP(EMPNO,EMPNAME,BASIC,DEPTNO)
+    -> values
+    -> (0001,'SUNIL',6000,10),
+    -> (0002,'HIREN',8000,20);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into SEMP(EMPNO,EMPNAME,BASIC,DEPTNO,DEPTHEAD)
+    -> values
+    -> (0003,'ALI',4000,10,0001);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into SEMP(EMPNO,EMPNAME,BASIC,DEPTHEAD)
+    -> values
+    -> (0004,'GEORGE',6000,0002);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from SEMP;
++-------+---------+-------+--------+----------+
+| EMPNO | EMPNAME | BASIC | DEPTNO | DEPTHEAD |
++-------+---------+-------+--------+----------+
+| 1     | SUNIL   |  6000 | 10     | NULL     |
+| 2     | HIREN   |  8000 | 20     | NULL     |
+| 3     | ALI     |  4000 | 10     | 1        |
+| 4     | GEORGE  |  6000 | NULL   | 2        |
++-------+---------+-------+--------+----------+
+4 rows in set (0.00 sec)
+
+
+mysql> create table SDEPT 
+    -> (
+    -> DEPTNO char(2),
+    -> DEPTNAME char(15)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+mysql> select * from SDEPT;
++--------+-------------+
+| DEPTNO | DEPTNAME    |
++--------+-------------+
+| 10     | Development |
+| 20     | Training    |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> create table S
+    -> (
+    -> `S#` char(2),
+    -> Sname varchar(10),
+    -> Status int,
+    -> City varchar(15)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into S
+    -> values
+    -> ('S1','Shruti',10,'London'),
+    -> ('S2','Gauri',20,'Paris'),
+    -> ('S3','Sanika',30,'Athens');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from S;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+mysql> create table P
+    -> (
+    -> `P#` char(2),
+    -> Pname varchar(10),
+    -> color varchar(10),
+    -> weight int,
+    -> city varchar(10)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table J
+    -> (
+    -> `J#` char(2),
+    -> Jname varchar(10),
+    -> city varchar(15));
+Query OK, 0 rows affected (0.05 sec)
+
+
+mysql> create table SPJ
+    -> (
+    -> `S#` char(2),
+    -> `P#` char(2),
+    -> `J#` char(2),
+    -> Qty int);
+Query OK, 0 rows affected (0.04 sec)
+
+
+mysql> desc P;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| P#     | char(2)     | YES  |     | NULL    |       |
+| Pname  | varchar(10) | YES  |     | NULL    |       |
+| color  | varchar(10) | YES  |     | NULL    |       |
+| weight | int         | YES  |     | NULL    |       |
+| city   | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.05 sec)
+
+mysql> insert into P
+    -> values
+    -> ('P1','keyboard','white',12,'Londan'),
+    -> ('P2','SSD','black',14,'Paris'),
+    -> ('P3','Screen','green',16,'Athens');
+Query OK, 3 rows affected (0.20 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> desc J;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| J#    | char(2)     | YES  |     | NULL    |       |
+| Jname | varchar(10) | YES  |     | NULL    |       |
+| city  | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into J
+    -> values 
+    -> ('J1','CompLab','Londan'),
+    -> ('J2','Office','Paris'),
+    -> ('J3','ITProject','Athens');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from J;
++------+-----------+--------+
+| J#   | Jname     | city   |
++------+-----------+--------+
+| J1   | CompLab   | Londan |
+| J2   | Office    | Paris  |
+| J3   | ITProject | Athens |
++------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> desc SPJ;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| S#    | char(2) | YES  |     | NULL    |       |
+| P#    | char(2) | YES  |     | NULL    |       |
+| J#    | char(2) | YES  |     | NULL    |       |
+| Qty   | int     | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into SPJ
+    -> values
+    -> ('S1','P1','J1',200),
+    -> ('S2','P2','J2',100),
+    -> ('S3','P3','J3',150);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from SPJ;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  100 |
+| S3   | P3   | J3   |  150 |
++------+------+------+------+
+3 rows in set (0.00 sec)
+
+Display all the data from the S table.    
+mysql> select * from S;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+Display only the S# and SNAME fields from the S table.    
+mysql> select `S#`,Sname from S;
++------+--------+
+| S#   | Sname  |
++------+--------+
+| S1   | Shruti |
+| S2   | Gauri  |
+| S3   | Sanika |
++------+--------+
+3 rows in set (0.00 sec)
+
+
+Display the PNAME and COLOR from the P table for the CITY=”London”.    
+mysql> select Pname,color from P
+    -> where city='Londan';
++----------+-------+
+| Pname    | color |
++----------+-------+
+| keyboard | white |
++----------+-------+
+1 row in set (0.00 sec)
+
+
+Display all the Suppliers from London. 
+mysql> select Sname from S
+    -> where city='London';
++--------+
+| Sname  |
++--------+
+| Shruti |
++--------+
+1 row in set (0.00 sec)
+
+
+
+Display all the Suppliers from Paris or Athens.    
+mysql> select Sname from S
+    -> where city In('Paris','Athens');
++--------+
+| Sname  |
++--------+
+| Gauri  |
+| Sanika |
++--------+
+2 rows in set (0.00 sec)
+
+ 
+mysql> select * from P;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
++------+----------+-------+--------+--------+
+3 rows in set (0.00 sec)
+
+Display all the Projects in Athens.
+mysql> select Pname from P
+    -> where city='Athens';
++--------+
+| Pname  |
++--------+
+| Screen |
++--------+
+1 row in set (0.00 sec)
+
+ Display all the Partnames with the weight between 12 and 14 (inclusive of both).
+mysql> select Pname from P
+    -> where weight In(12,14);
++----------+
+| Pname    |
++----------+
+| keyboard |
+| SSD      |
++----------+
+2 rows in set (0.00 sec)
+
+
+ Display all the Suppliers with a Status greater than or equal to 20.   
+mysql> select Sname,Status from S
+    -> where Status>=20;
++--------+--------+
+| Sname  | Status |
++--------+--------+
+| Gauri  |     20 |
+| Sanika |     30 |
++--------+--------+
+2 rows in set (0.00 sec)
+
+Display all the Suppliers except the Suppliers from London.    
+mysql> select Sname ,city from S 
+    -> where city Not In('London');
++--------+--------+
+| Sname  | city   |
++--------+--------+
+| Gauri  | Paris  |
+| Sanika | Athens |
++--------+--------+
+2 rows in set (0.00 sec)
+
+ Display only the Cities from where the Suppliers come from.  
+mysql> select city from S;
++--------+
+| city   |
++--------+
+| London |
+| Paris  |
+| Athens |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from P;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
++------+----------+-------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+
+Assuming that the Part Weight is in GRAMS, display the same in 
+MILLIGRAMS and KILOGRAMS.
+mysql> select Pname, weight/1000 as "W_IN_KG",weight*1000 as "W_IN_MG"
+    -> from P;
++----------+---------+---------+
+| Pname    | W_IN_KG | W_IN_MG |
++----------+---------+---------+
+| keyboard |  0.0120 |   12000 |
+| SSD      |  0.0140 |   14000 |
+| Screen   |  0.0160 |   16000 |
++----------+---------+---------+
+3 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/exercise.txt;

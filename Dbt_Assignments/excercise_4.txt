@@ -1,0 +1,298 @@
+
+
+Q. Display the minimum Status in the Supplier table.   
+mysql> select min(minSal) from
+    -> (select min(Status) minSal from S
+    -> group by Status) minStatus;
++-------------+
+| min(minSal) |
++-------------+
+|          10 |
++-------------+
+1 row in set (0.03 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+
+mysql> select max(maxWeight) from
+    -> (select max(weight) maxWeight from P
+    -> group by weight) miniweight;
++----------------+
+| max(maxWeight) |
++----------------+
+|             16 |
++----------------+
+1 row in set (0.00 sec)
+
+Display the maximum Weight in the Parts table.  
+mysql> select max(maxWeight) from
+    -> (select max(weight) maxWeight from P
+    -> group by weight) maximumweight;
++----------------+
+| max(maxWeight) |
++----------------+
+|             16 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select max(weight) from P;
++-------------+
+| max(weight) |
++-------------+
+|          16 |
++-------------+
+1 row in set (0.00 sec)
+
+Q. Display the minimum Status in the Supplier table.   
+mysql> select min(Status) from S;
++-------------+
+| min(Status) |
++-------------+
+|          10 |
++-------------+
+1 row in set (0.00 sec)
+
+Q. Display the average Weight of the Parts.   
+mysql> select avg(weight) from P;
++-------------+
+| avg(weight) |
++-------------+
+|     14.2500 |
++-------------+
+1 row in set (0.03 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  100 |
+| S3   | P3   | J3   |  150 |
++------+------+------+------+
+3 rows in set (0.02 sec)
+
+Q. Display the total Quantity sold for part ‘P1’.  
+mysql> select Qty from spj
+    -> where `P#`='P1';
++------+
+| Qty  |
++------+
+|  200 |
++------+
+1 row in set (0.04 sec)
+
+mysql> insert into spj 
+    -> values 
+    -> ('S4','P2','J4',350);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  100 |
+| S3   | P3   | J3   |  150 |
+| S4   | P2   | J4   |  350 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+Q.Display the total Quantity sold for each part.  
+mysql> select `P#`, sum(Qty) from spj
+    -> group by `P#`;
++------+----------+
+| P#   | sum(Qty) |
++------+----------+
+| P1   |      200 |
+| P2   |      450 |
+| P3   |      150 |
++------+----------+
+3 rows in set (0.00 sec)
+
+Q. Display the average Quantity sold for each part
+mysql> select `P#`, avg(Qty) from spj
+    -> group by `P#`;
++------+----------+
+| P#   | avg(Qty) |
++------+----------+
+| P1   | 200.0000 |
+| P2   | 225.0000 |
+| P3   | 150.0000 |
++------+----------+
+3 rows in set (0.04 sec)
+
+mysql> select `P#`, max(Qty) from spj
+    -> group by `P#`;
++------+----------+
+| P#   | max(Qty) |
++------+----------+
+| P1   |      200 |
+| P2   |      350 |
+| P3   |      150 |
++------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  100 |
+| S3   | P3   | J3   |  150 |
+| S4   | P2   | J4   |  350 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+Q. Display the maximum Quantity sold for each part, provided the maximum Quantity 
+is greater than 800.  
+mysql> update spj 
+    -> set Qty=900
+    -> where `P#`='p2';
+Query OK, 2 rows affected (0.03 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  900 |
+| S3   | P3   | J3   |  150 |
+| S4   | P2   | J4   |  900 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select `P#`,maxQty from
+    -> (select `P#`, max(Qty) maxQty from spj
+    -> group by `P#`) abcd where maxQty>800;
++------+--------+
+| P#   | maxQty |
++------+--------+
+| P2   |    900 |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> select `P#`,max(Qty) maxQty from spj
+    -> group by `P#`
+    -> having maxQty>800;
++------+--------+
+| P#   | maxQty |
++------+--------+
+| P2   |    900 |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from S;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+Display the Status and the count of Suppliers with that Status.  
+mysql> select Status,count(Status) from S
+    -> group by Status;
++--------+---------------+
+| Status | count(Status) |
++--------+---------------+
+|     10 |             2 |
+|     20 |             2 |
+|     30 |             2 |
++--------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+
+Q.Display the count of Projects going on in different cities.  
+mysql> select city,count(`P#`) as 'project_Ongoing' from P
+    -> group by city;
++--------+-----------------+
+| city   | project_Ongoing |
++--------+-----------------+
+| Londan |               2 |
+| Paris  |               1 |
+| Athens |               1 |
++--------+-----------------+
+3 rows in set (0.00 sec)
+
+
+mysql> select * from S;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+Q.  Display the Status and the Count of Suppliers with that Status in the following format 
+as shown below:-   
+Status   Count
+Ten       1  
+Twenty    2   
+Thirty    3  
+
+mysql> select case
+    -> when Status=10 then 'Ten'
+    -> when Status=20 then 'Twenty'
+    -> when Status=30 then 'Thirty'
+    -> end 'new_Status',count(Status) as 'total'
+    -> from S
+    -> group by new_Status;
++------------+-------+
+| new_Status | total |
++------------+-------+
+| Ten        |     2 |
+| Twenty     |     2 |
+| Thirty     |     2 |
++------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select count(Status), case
+    -> when Status=10 then 'Ten'
+    -> when Status=20 then 'Twenty'
+    -> when Status=30 then 'Thirty'
+    -> end 'new_Status' from S
+    -> group by new_Status;
++---------------+------------+
+| count(Status) | new_Status |
++---------------+------------+
+|             2 | Ten        |
+|             2 | Twenty     |
+|             2 | Thirty     |
++---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/excercise_5.txt;

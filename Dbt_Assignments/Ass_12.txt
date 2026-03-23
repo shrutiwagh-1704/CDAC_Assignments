@@ -1,0 +1,443 @@
+mysql> select 
+    -> 8 fr;
++----+
+| fr |
++----+
+|  8 |
++----+
+1 row in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | New York  | 0.10 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select cname from customers join salespeople on
+    -> customers.snum=salespeople.snum
+    -> where customers.snum=any(select salespeople.snum from salespeople where sname ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> select cname from customers join salespeople on
+    -> customers.snum=salespeople.snum
+    -> where customers.rating>=any(select customers.rating from customers join salespeople on customers.snum=salespeople where salespeople.sname='Serres');
+ERROR 1054 (42S22): Unknown column 'salespeople' in 'on clause'
+mysql> select cname from customers join salespeople on
+    -> customers.snum=salespeople.snum
+    -> where customers.rating>=any(select customers.rating from customers join salespeople on customers.snum=salespeople where salespeople.sname='Serres');
+ERROR 1054 (42S22): Unknown column 'salespeople' in 'on clause'
+mysql> select cname from customers join salespeople on
+    -> customers.snum=salespeople.snum
+    -> where customers.rating>=any(select customers.rating 
+    -> from customers join salespeople on 
+    -> customers.snum=salespeople.snum 
+    -> where salespeople.sname='serres');
++----------+
+| cname    |
++----------+
+| Grass    |
+| Liu      |
+| Cisneros |
+| Giovanni |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select salespeople.sname from salespeople join on 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on' at line 1
+mysql> select salespeople.sname from salespeople join customers on
+    -> salespeople.snum=customers.snum
+    -> where salespeople.city not In(select customers.city from customers);
++---------+
+| sname   |
++---------+
+| Peel    |
+| Axelrod |
+| Peel    |
+| Rifkin  |
+| Motika  |
++---------+
+5 rows in set (0.03 sec)
+
+mysql> select salespeople.sname from customers join salespeople on 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select salespeople.sname from salespeople 
+    -> where salespeople.city not all (select customers.city from customers join salespeople on customers.snum=salespeople.snum );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'all (select customers.city from customers join salespeople on customers.snum=sal' at line 2
+mysql> select salespeople.sname from salespeople 
+    -> where salespeople.city <> ALL
+    -> (select customers.city from customers join salespeople on
+    -> customers.snum=salespeople.snum);
++---------+
+| sname   |
++---------+
+| Peel    |
+| Motika  |
+| Rifkin  |
+| Axelrod |
++---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select Onum,Amt from orders 
+    -> where amt >(select orders.amt from customers 
+    -> join orders on customers.cnum=orders.cnum 
+    -> where customers.city='Londan');
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select Onum,Amt from orders 
+    -> where amt >any(select orders.amt from customers 
+    -> join orders on customers.cnum=orders.cnum 
+    -> where customers.city='Londan');
++------+---------+
+| Onum | Amt     |
++------+---------+
+| 3002 | 1900.10 |
+| 3005 | 5160.45 |
+| 3006 | 1098.16 |
+| 3009 | 1713.23 |
+| 3009 | 1713.23 |
+| 3008 | 4723.00 |
+| 3010 | 1309.95 |
+| 3011 | 9891.88 |
++------+---------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT Onum, Amt
+    -> FROM orders
+    -> WHERE Amt > (
+    ->     SELECT MIN(o.Amt)
+    ->     FROM customers c
+    ->     JOIN orders o ON c.cnum = o.cnum
+    ->     WHERE c.city = 'Londan'
+    -> );
++------+---------+
+| Onum | Amt     |
++------+---------+
+| 3002 | 1900.10 |
+| 3005 | 5160.45 |
+| 3006 | 1098.16 |
+| 3009 | 1713.23 |
+| 3009 | 1713.23 |
+| 3008 | 4723.00 |
+| 3010 | 1309.95 |
+| 3011 | 9891.88 |
++------+---------+
+8 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.04 sec)
+
+mysql> select Cname,city,rating from customers 
+    -> union
+    -> select case 
+    -> when rating>=200 then 'High Rating'
+    -> else 'Low Rating'
+    -> end 'Rating_remark'
+    -> from customers;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+mysql> select Cname,city,rating from customers 
+    -> union
+    -> select Cname,city ,case 
+    -> when rating>=200 then 'High Rating'
+    -> else 'Low Rating'
+    -> end 'Rating_remark'
+    -> from customers;
++----------+----------+-------------+
+| Cname    | city     | rating      |
++----------+----------+-------------+
+| Hoffman  | Londan   | 100         |
+| Giovanni | Rome     | 200         |
+| Liu      | San Jose | 200         |
+| Grass    | Berlin   | 300         |
+| Clemens  | Londan   | 100         |
+| Cisneros | San Jose | 300         |
+| Pereira  | Rome     | 100         |
+| Hoffman  | Londan   | Low Rating  |
+| Giovanni | Rome     | High Rating |
+| Liu      | San Jose | High Rating |
+| Grass    | Berlin   | High Rating |
+| Clemens  | Londan   | Low Rating  |
+| Cisneros | San Jose | High Rating |
+| Pereira  | Rome     | Low Rating  |
++----------+----------+-------------+
+14 rows in set (0.02 sec)
+
+mysql> SELECT cname, city, 'High Rating' AS remark
+    -> FROM customers
+    -> WHERE rating >= 200
+    -> 
+    -> UNION
+    -> 
+    -> SELECT cname, city, 'Low Rating' AS remark
+    -> FROM customers
+    -> WHERE rating < 200;
++----------+----------+-------------+
+| cname    | city     | remark      |
++----------+----------+-------------+
+| Giovanni | Rome     | High Rating |
+| Liu      | San Jose | High Rating |
+| Grass    | Berlin   | High Rating |
+| Cisneros | San Jose | High Rating |
+| Hoffman  | Londan   | Low Rating  |
+| Clemens  | Londan   | Low Rating  |
+| Pereira  | Rome     | Low Rating  |
++----------+----------+-------------+
+7 rows in set (0.03 sec)
+
+mysql> select salespeople.sname,salespeople.snum from salespeople
+    -> join orders on salespeople.snum=orders.snum
+    -> union
+    -> select customers.cname,customers.cnum from customers 
+    -> join orders on customers.cnum=orders.cnum;
++----------+------+
+| sname    | snum |
++----------+------+
+| Rifkin   | 1007 |
+| Peel     | 1001 |
+| Motika   | 1004 |
+| Serres   | 1002 |
+| Axelrod  | 1003 |
+| Cisneros | 2008 |
+| Hoffman  | 2001 |
+| Pereira  | 2007 |
+| Liu      | 2003 |
+| Giovanni | 2002 |
+| Grass    | 2004 |
+| Clemens  | 2006 |
++----------+------+
+12 rows in set (0.00 sec)
+
+mysql> select sname,snum from salespeople 
+    -> union 
+    -> select cname,from customers where ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from customers where' at line 3
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+mysql> select cnum,count(onum) from orders 
+    -> group by cnum;
++------+-------------+
+| cnum | count(onum) |
++------+-------------+
+| 2008 |           2 |
+| 2001 |           1 |
+| 2007 |           1 |
+| 2003 |           1 |
+| 2002 |           2 |
+| 2004 |           2 |
+| 2006 |           2 |
++------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> select sname,snum from salespeople 
+    -> union
+    -> select cnum from orders 
+    -> group by cnum
+    -> having count(cnum)>2;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+mysql> select salespeople.sname,salespeople.snum from salespeople
+    -> join orders on salespeople.snum=orders.snum
+    -> group by salespeople.snum,salespeople.sname
+    -> having count(orders.onum)>1
+    -> union
+    -> select customers.cname,customers.cnum from customers 
+    -> join orders on customers.cnum=orders.cnum
+    -> group by customers.cnum,customers.name
+    -> having count(orders.onum)>1
+    -> order by salespeople.sname;
+ERROR 1250 (42000): Table 'salespeople' from one of the SELECTs cannot be used in global ORDER clause
+mysql> select salespeople.sname as name ,salespeople.snum as num from salespeople
+    -> join orders on salespeople.snum=orders.snum
+    -> group by salespeople.snum,salespeople.sname
+    -> having count(orders.onum)>1
+    -> union
+    -> select customers.cname as name,customers.cnum as num from customers
+    -> join orders on customers.cnum=orders.cnum
+    -> group by customers.cnum,customers.name
+    -> having count(orders.onum)>1
+    -> order by name,num;
+ERROR 1054 (42S22): Unknown column 'customers.name' in 'group statement'
+mysql> select salespeople.sname as name ,salespeople.snum as num from salespeople
+    -> join orders on salespeople.snum=orders.snum
+    -> group by salespeople.snum,salespeople.sname
+    -> having count(orders.onum)>1
+    -> union
+    -> select customers.cname as name,customers.cnum as num from customers
+    -> join orders on customers.cnum=orders.cnum
+    -> group by customers.cnum,customers.name
+    -> having count(orders.onum)>1
+    -> order by name,num;
+ERROR 1054 (42S22): Unknown column 'customers.name' in 'group statement'
+mysql> select salespeople.sname as name ,salespeople.snum as num from salespeople
+    -> join orders on salespeople.snum=orders.snum
+    -> group by salespeople.snum,salespeople.sname
+    -> having count(orders.onum)>1
+    -> union
+    -> select customers.cname as name,customers.cnum as num from customers
+    -> join orders on customers.cnum=orders.cnum
+    -> group by customers.cnum,customers.cname
+    -> having count(orders.onum)>1
+    -> order by name,num;
++----------+------+
+| name     | num  |
++----------+------+
+| Axelrod  | 1003 |
+| Cisneros | 2008 |
+| Clemens  | 2006 |
+| Giovanni | 2002 |
+| Grass    | 2004 |
+| Peel     | 1001 |
+| Rifkin   | 1007 |
+| Serres   | 1002 |
++----------+------+
+8 rows in set (0.03 sec)
+
+mysql> select snum as num from salespeople 
+    -> union all 
+    -> select cnum as num from customers ;
++------+
+| num  |
++------+
+| 1001 |
+| 1002 |
+| 1004 |
+| 1007 |
+| 1003 |
+| 2001 |
+| 2002 |
+| 2003 |
+| 2004 |
+| 2006 |
+| 2008 |
+| 2007 |
++------+
+12 rows in set (0.00 sec)
+
+mysql> select snum as num from salespeople 
+    -> where city='San Jose'
+    -> union all 
+    -> select cnum as num from customers 
+    -> where city='San Jose'
+    -> union 
+    -> select onum as num from orders 
+    -> where odate='1990-10-03';
++------+
+| num  |
++------+
+| 1002 |
+| 2003 |
+| 2008 |
+| 3001 |
+| 3003 |
+| 3002 |
+| 3005 |
+| 3006 |
++------+
+8 rows in set (0.05 sec)
+
+mysql> select snum as num from salespeople 
+    -> where city='San Jose'
+    -> union
+    -> select cnum as num from customers 
+    -> where city='San Jose'
+    -> union all
+    -> select onum as num from orders 
+    -> where odate='1990-10-03';
++------+
+| num  |
++------+
+| 1002 |
+| 2003 |
+| 2008 |
+| 3001 |
+| 3003 |
+| 3002 |
+| 3005 |
+| 3006 |
++------+
+8 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Terminal close -- exit!

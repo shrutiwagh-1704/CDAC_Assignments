@@ -1,0 +1,137 @@
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | New York  | 0.10 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select cname,city from customers 
+    -> where rating =(select rating from customers where cname='Hoffman');
++---------+--------+
+| cname   | city   |
++---------+--------+
+| Hoffman | Londan |
+| Clemens | Londan |
+| Pereira | Rome   |
++---------+--------+
+3 rows in set (0.06 sec)
+
+mysql> mysql> select cname,city from customers
+    ->     -> where rating =(select rating from customers where cname='Hoffman');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql> select cname,city from customers
+    -> where rating =(select rating from' at line 1
+mysql> +---------+--------+
+    -> | cname   | city   |
+    -> +---------+--------+
+    -> | Hoffman | Londan |
+    -> | Clemens | Londan |
+    -> | Pereira | Rome   |
+    -> +---------+--------+
+    -> 3 rows in set (0.06 sec)
+    -> 
+    -> mysql>//
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+---------+--------+
+| cname   | city   |
++---------+--------+
+| Hoffman | Londa' at line 1
+mysql> SELECT c1.cname, c1.city
+    -> FROM customers c1
+    -> JOIN customers c2 
+    ->   ON c1.rating = c2.rating
+    -> WHERE c2.cname = 'Hoffman';
++---------+--------+
+| cname   | city   |
++---------+--------+
+| Hoffman | Londan |
+| Clemens | Londan |
+| Pereira | Rome   |
++---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select s1.sname from salespeople as sq 
+    -> join salespeople as ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select s1.sname from salespeople as s1
+    -> join salespeople as s2
+    -> on s1.city=s2.city;
++---------+
+| sname   |
++---------+
+| Motika  |
+| Peel    |
+| Serres  |
+| Motika  |
+| Peel    |
+| Rifkin  |
+| Axelrod |
++---------+
+7 rows in set (0.00 sec)
+
+mysql> select s1.sname,s1.city from salespeople as s1
+    -> join salespeople as s2
+    -> on s1.city=s2.city;
++---------+-----------+
+| sname   | city      |
++---------+-----------+
+| Motika  | London    |
+| Peel    | London    |
+| Serres  | San Jose  |
+| Motika  | London    |
+| Peel    | London    |
+| Rifkin  | Barcelona |
+| Axelrod | New York  |
++---------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> select distinct s1.sname,s1.city from salespeople as s1
+    -> join salespeople as s2
+    -> on s1.city=s2.city;
++---------+-----------+
+| sname   | city      |
++---------+-----------+
+| Motika  | London    |
+| Peel    | London    |
+| Serres  | San Jose  |
+| Rifkin  | Barcelona |
+| Axelrod | New York  |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> SELECT s1.sname, s2.sname, s1.city
+    -> FROM salespeople s1
+    -> JOIN salespeople s2
+    ->   ON s1.city = s2.city
+    -> WHERE s1.snum < s2.snum;
++-------+--------+--------+
+| sname | sname  | city   |
++-------+--------+--------+
+| Peel  | Motika | London |
++-------+--------+--------+
+1 row in set (0.04 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Terminal close -- exit!

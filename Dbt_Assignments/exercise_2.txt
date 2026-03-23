@@ -1,0 +1,162 @@
+mysql> select * from S;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+ Display the Supplier table in the descending order of CITY.
+mysql> select * from S
+    -> order by city desc;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S2   | Gauri  |     20 | Paris  |
+| S1   | Shruti |     10 | London |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.02 sec)
+
+mysql> select * from P;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
++------+----------+-------+--------+--------+
+3 rows in set (0.00 sec)
+
+]
+
+mysql> insert into P
+    -> values
+    -> ('P4','HDD','black',15,'Londan');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from P;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+Display the Part Table in the ascending order of CITY and within the city in 
+the ascending order of Part names.   
+mysql> select * from P
+    -> order by city asc,Pname asc;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from S;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+Display all the Suppliers with a status between 10 and 20.   
+mysql> select * from S
+    -> where Status between 10 and 20;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
++------+--------+--------+--------+
+2 rows in set (0.00 sec)
+
+Display all the Parts and their Weight, which are not in the range of 10 and 15
+mysql> select Pname,weight
+    -> from P
+    -> where weight not between 10 and 15;
++--------+--------+
+| Pname  | weight |
++--------+--------+
+| Screen |     16 |
++--------+--------+
+1 row in set (0.00 sec)
+
+Display all the Part names starting with the letter ‘S’.  
+mysql> select Pname from P
+    -> where Pname like 'S%';
++--------+
+| Pname  |
++--------+
+| SSD    |
+| Screen |
++--------+
+2 rows in set (0.00 sec)
+
+Display all the Suppliers, belonging to cities starting with the letter ‘L’. 
+mysql> select * from S
+    -> where city like 'L%';
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
++------+--------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from S;
++------+--------+--------+--------+
+| S#   | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Shruti |     10 | London |
+| S2   | Gauri  |     20 | Paris  |
+| S3   | Sanika |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+Display all the Projects, with the third letter in JNAME as ‘n’.
+mysql> select * from J;
++------+-----------+--------+
+| J#   | Jname     | city   |
++------+-----------+--------+
+| J1   | CompLab   | Londan |
+| J2   | Office    | Paris  |
+| J3   | ITProject | Athens |
++------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from J
+    -> where Jname like '__n%';
+Empty set (0.00 sec)
+
+
+mysql> insert into J
+    -> values
+    -> ('J4','sunlab','Londan');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from J
+    -> where Jname like '__n%';
++------+--------+--------+
+| J#   | Jname  | city   |
++------+--------+--------+
+| J4   | sunlab | Londan |
++------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/exercise_3.txt;

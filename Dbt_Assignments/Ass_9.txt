@@ -1,0 +1,196 @@
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select Onum,Cname 
+    -> from orders join customers 
+    -> on customers.Cnum=orders.cnum;
++------+----------+
+| Onum | Cname    |
++------+----------+
+| 3001 | Cisneros |
+| 3003 | Hoffman  |
+| 3002 | Pereira  |
+| 3005 | Liu      |
+| 3006 | Cisneros |
+| 3009 | Giovanni |
+| 3009 | Giovanni |
+| 3007 | Grass    |
+| 3008 | Clemens  |
+| 3010 | Grass    |
+| 3011 | Clemens  |
++------+----------+
+11 rows in set (0.00 sec)
+
+mysql> select * from salesperson;
+ERROR 1146 (42S02): Table 'kharghar.salesperson' doesn't exist
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | New York  | 0.10 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select Onum,Sname,Cname from 
+    -> orders,customers,salespeople
+    -> where customers.cnum=orders.cnum 
+    -> and orders.Snum=salespeople.Snum;
++------+---------+----------+
+| Onum | Sname   | Cname    |
++------+---------+----------+
+| 3003 | Peel    | Hoffman  |
+| 3009 | Axelrod | Giovanni |
+| 3009 | Axelrod | Giovanni |
+| 3005 | Serres  | Liu      |
+| 3010 | Serres  | Grass    |
+| 3007 | Serres  | Grass    |
+| 3011 | Peel    | Clemens  |
+| 3008 | Peel    | Clemens  |
+| 3006 | Rifkin  | Cisneros |
+| 3001 | Rifkin  | Cisneros |
+| 3002 | Motika  | Pereira  |
++------+---------+----------+
+11 rows in set (0.00 sec)
+
+mysql> select Cname,Sname from customers join salespeople 
+    -> where customers.Snum=Salespeople.Snum and salespeople.comm >0.12;
++----------+--------+
+| Cname    | Sname  |
++----------+--------+
+| Liu      | Serres |
+| Grass    | Serres |
+| Cisneros | Rifkin |
++----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select Cname,Sname,comm from customers join salespeople 
+    -> where customers.Snum=Salespeople.Snum and salespeople.comm >0.12;
++----------+--------+------+
+| Cname    | Sname  | comm |
++----------+--------+------+
+| Liu      | Serres | 0.13 |
+| Grass    | Serres | 0.13 |
+| Cisneros | Rifkin | 0.15 |
++----------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | New York  | 0.10 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| Cnum | Cname    | City     | Rating | Snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | Londan   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | Londan   |    100 | 1001 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select Sname ,Amt*comm as 'total_commission';
+ERROR 1054 (42S22): Unknown column 'Sname' in 'field list'
+mysql> select sname,sum(Amt)*comm 
+    -> from orders,customers,salespeople 
+    -> where (orders.cnum=customers.cnum and salespeople.snum=orders.snum)
+    -> group by snum;
+ERROR 1052 (23000): Column 'snum' in group statement is ambiguous
+mysql> select snum,sum(Amt)*comm
+    -> from orders,customers,salespeople 
+    -> where (orders.cnum=customers.cnum and salespeople.snum=orders.snum)
+    -> group by snum
+    -> having rating>100;
+ERROR 1052 (23000): Column 'snum' in field list is ambiguous
+mysql> select salespeople.snum,sum(Amt)*comm
+    -> from orders,customers,salespeople 
+    -> where (orders.cnum=customers.cnum and salespeople.snum=orders.snum)
+    -> group by salespeople.snum
+    -> having rating>100;
+ERROR 1054 (42S22): Unknown column 'rating' in 'having clause'
+mysql> select onum,amt*comm as 'total_commiossion'
+    -> from ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select sname,Onum,amt*comm as 'total_commiossion'
+    -> from orders,customers,salespeople 
+    -> where (orders.snum=salespeople.snum and orders.cnum=customers.cnum
+    -> and customers.Rating>100);
++---------+------+-------------------+
+| sname   | Onum | total_commiossion |
++---------+------+-------------------+
+| Serres  | 3010 |            170.29 |
+| Serres  | 3007 |              9.85 |
+| Serres  | 3005 |            670.86 |
+| Rifkin  | 3006 |            164.72 |
+| Rifkin  | 3001 |              2.80 |
+| Axelrod | 3009 |            171.32 |
+| Axelrod | 3009 |            171.32 |
++---------+------+-------------------+
+7 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> tee E:/CDAC_labs/Module_2/Ass_10.txt;

@@ -1,0 +1,578 @@
+mysql> select * from s;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.03 sec)
+
+mysql> select * from Qty;
+ERROR 1146 (42S02): Table 'kharghar.qty' doesn't exist
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  900 |
+| S3   | P3   | J3   |  150 |
+| S4   | p4   | J4   |  900 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select Sname,Qty from s,spj
+    -> where s.`S#`=spj.`S#`;
++----------+------+
+| Sname    | Qty  |
++----------+------+
+| Shruti   |  200 |
+| Gauri    |  900 |
+| Sanika   |  150 |
+| john doe |  900 |
++----------+------+
+4 rows in set (0.02 sec)
+
+mysql> select Sname,Qty from s left join on spj 
+    -> where (s.`S#`=spj.`S#`);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on spj 
+where (s.`S#`=spj.`S#`)' at line 1
+mysql> select Sname,Qty from s left join spj
+    -> on(where s.`S#`=spj.`S#`);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where s.`S#`=spj.`S#`)' at line 2
+mysql> select Sname,Qty from s left join spj
+    -> on(s.`S#`=spj.`S#`);
++----------+------+
+| Sname    | Qty  |
++----------+------+
+| Shruti   |  200 |
+| Gauri    |  900 |
+| Sanika   |  150 |
+| john doe |  900 |
+| lala     | NULL |
+| Block    | NULL |
++----------+------+
+6 rows in set (0.00 sec)
+
+mysql> select Pname,Qty from P left join spj
+    -> on(p.`P#`=spj.`P#`);
++----------+------+
+| Pname    | Qty  |
++----------+------+
+| keyboard |  200 |
+| SSD      |  900 |
+| Screen   |  150 |
+| HDD      |  900 |
++----------+------+
+4 rows in set (0.02 sec)
+
+mysql> select Jname,Qty from J left join spj
+    -> on(J.`J#`=spj.`J#`);
++-----------+------+
+| Jname     | Qty  |
++-----------+------+
+| CompLab   |  200 |
+| Office    |  900 |
+| ITProject |  150 |
+| sunlab    |  900 |
++-----------+------+
+4 rows in set (0.00 sec)
+
+mysql> select sname,pname,jname,Qty from s left join 
+    -> on(s.`S#`=spj.`S#`) and left join on 
+    -> (p.`P#`=spj.`P#`) and left join on 
+    -> (j.`J#`=spj.`J#`);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on(s.`S#`=spj.`S#`) and left join on 
+(p.`P#`=spj.`P#`) and left join on 
+(j.`J#' at line 2
+mysql> select sname,pname,jname,Qty from s ,p,j,spj
+    -> where s.`S#`=spj.`S#` and 
+    -> where p.`P#`=spj.`P#` and 
+    -> where j.`J#`=spj.`J#`;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where p.`P#`=spj.`P#` and 
+where j.`J#`=spj.`J#`' at line 3
+mysql> select sname,pname,jname,Qty from s ,p,j,spj
+    -> where s.`S#`=spj.`S#` and 
+    -> p.`P#`=spj.`P#` and
+    -> j.`J#`=spj.`J#`;
++----------+----------+-----------+------+
+| sname    | pname    | jname     | Qty  |
++----------+----------+-----------+------+
+| Shruti   | keyboard | CompLab   |  200 |
+| Gauri    | SSD      | Office    |  900 |
+| Sanika   | Screen   | ITProject |  150 |
+| john doe | HDD      | sunlab    |  900 |
++----------+----------+-----------+------+
+4 rows in set (0.02 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from s;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select sname,city
+    -> group by(city);
+ERROR 1054 (42S22): Unknown column 'sname' in 'field list'
+mysql> select city 
+    -> group by(city) ;
+ERROR 1054 (42S22): Unknown column 'city' in 'field list'
+mysql> select city from s
+    -> group by(city);
++--------+
+| city   |
++--------+
+| London |
+| Paris  |
+| Athens |
++--------+
+3 rows in set (0.08 sec)
+
+mysql> select sname from s 
+    -> where city=any(select city from s
+    -> group by (city));
++----------+
+| sname    |
++----------+
+| Shruti   |
+| Gauri    |
+| Sanika   |
+| john doe |
+| lala     |
+| Block    |
++----------+
+6 rows in set (0.07 sec)
+
+mysql> select * from j;
++------+-----------+--------+
+| J#   | Jname     | city   |
++------+-----------+--------+
+| J1   | CompLab   | Londan |
+| J2   | Office    | Paris  |
+| J3   | ITProject | Athens |
+| J4   | sunlab    | Londan |
++------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from s;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.01 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  900 |
+| S3   | P3   | J3   |  150 |
+| S4   | p4   | J4   |  900 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select sname,city s,j
+    -> where s.city=j.city;
+ERROR 1054 (42S22): Unknown column 'sname' in 'field list'
+mysql> select sname,city from s,j
+    -> where s.city=j.city;
+ERROR 1052 (23000): Column 'city' in field list is ambiguous
+mysql> select sname,city s,j
+    -> where s.City=j.city;
+ERROR 1054 (42S22): Unknown column 'sname' in 'field list'
+mysql> select sname,city from s,j
+    -> where s.City=j.city;
+ERROR 1052 (23000): Column 'city' in field list is ambiguous
+mysql> select sname,City s,j
+    -> where s.City=j.city;;
+ERROR 1054 (42S22): Unknown column 'sname' in 'field list'
+ERROR: 
+No query specified
+
+mysql> select sname,City from s,j
+    -> where s.City=j.city;;
+ERROR 1052 (23000): Column 'City' in field list is ambiguous
+ERROR: 
+No query specified
+
+mysql> select sname,City from s,j
+    -> where s.City=j.city;
+ERROR 1052 (23000): Column 'City' in field list is ambiguous
+mysql> select s.sname,s.City from s,j
+    -> where s.City=j.city;
++----------+--------+
+| sname    | City   |
++----------+--------+
+| Gauri    | Paris  |
+| Sanika   | Athens |
+| john doe | Paris  |
+| lala     | Athens |
++----------+--------+
+4 rows in set (0.03 sec)
+
+mysql> select s.sname,s.City,j.city from s,j
+    -> where s.City=j.city;
++----------+--------+--------+
+| sname    | City   | city   |
++----------+--------+--------+
+| Gauri    | Paris  | Paris  |
+| Sanika   | Athens | Athens |
+| john doe | Paris  | Paris  |
+| lala     | Athens | Athens |
++----------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  900 |
+| S3   | P3   | J3   |  150 |
+| S4   | p4   | J4   |  900 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select color,Qty from p,spj
+    -> where p.color='green';
++-------+------+
+| color | Qty  |
++-------+------+
+| green |  200 |
+| green |  900 |
+| green |  150 |
+| green |  900 |
++-------+------+
+4 rows in set (0.00 sec)
+
+mysql> select color,Qty from p,spj
+    -> where (p.`P#`=spj.`P#` and p.color='green');
++-------+------+
+| color | Qty  |
++-------+------+
+| green |  150 |
++-------+------+
+1 row in set (0.00 sec)
+
+mysql> select pname,Qty from p,spj
+    -> where (p.`P#`=spj.`P#` and p.color='green');
++--------+------+
+| pname  | Qty  |
++--------+------+
+| Screen |  150 |
++--------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from s;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select Qty,Status from s,spj
+    -> where (s.`S#`=spj.`S#`);
++------+--------+
+| Qty  | Status |
++------+--------+
+|  200 |     10 |
+|  900 |     20 |
+|  150 |     30 |
+|  900 |     20 |
++------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select Qty,Status from s,spj
+    -> where (s.`S#`=spj.`S#` and Status=20);
++------+--------+
+| Qty  | Status |
++------+--------+
+|  900 |     20 |
+|  900 |     20 |
++------+--------+
+2 rows in set (0.03 sec)
+
+mysql> select pname,Qty from p,spj
+    -> where (p.`P#`=spj.`P#` and weight>14);
++--------+------+
+| pname  | Qty  |
++--------+------+
+| Screen |  150 |
+| HDD    |  900 |
++--------+------+
+2 rows in set (0.04 sec)
+
+mysql> select * from j;
++------+-----------+--------+
+| J#   | Jname     | city   |
++------+-----------+--------+
+| J1   | CompLab   | Londan |
+| J2   | Office    | Paris  |
+| J3   | ITProject | Athens |
+| J4   | sunlab    | Londan |
++------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select jname,j.city j,spj
+    -> where (j.`j#`=spj.`J#` and spj.Qty>500);
+ERROR 1054 (42S22): Unknown column 'jname' in 'field list'
+mysql> select Jname,city j,spj
+    -> where (j.`j#`=spj.`J#` and spj.Qty>500);
+ERROR 1054 (42S22): Unknown column 'Jname' in 'field list'
+mysql> select Jname,city J,spj
+    -> where (j.`j#`=spj.`J#` and spj.Qty>500);
+ERROR 1054 (42S22): Unknown column 'Jname' in 'field list'
+mysql> select j.jname,j.city from j,spj
+    -> where (j.`j#`=spj.`J#` and spj.Qty>500);
++--------+--------+
+| jname  | city   |
++--------+--------+
+| Office | Paris  |
+| sunlab | Londan |
++--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select j.jname,j.city from j,spj
+    -> where(j.`J#`=spj.`J#`)
+    -> group by j.`J#`,j.name,j.city
+    -> having SUM(spj.Qty) > 500;
+ERROR 1054 (42S22): Unknown column 'j.name' in 'group statement'
+mysql> select j.jname,j.city from j,spj
+    -> where(j.`J#`=spj.`J#`)
+    -> group by j.`J#`,j.jname,j.city
+    -> having SUM(spj.Qty) > 500;
++--------+--------+
+| jname  | city   |
++--------+--------+
+| Office | Paris  |
+| sunlab | Londan |
++--------+--------+
+2 rows in set (0.10 sec)
+
+mysql> select pname,qty from p,spj
+    -> where (p.`P#`=spj.`P#`);
++----------+------+
+| pname    | qty  |
++----------+------+
+| keyboard |  200 |
+| SSD      |  900 |
+| Screen   |  150 |
+| HDD      |  900 |
++----------+------+
+4 rows in set (0.00 sec)
+
+mysql> select pname,qty from p,spj
+    -> where (p.`P#`=spj.`P#` and weight<15);
++----------+------+
+| pname    | qty  |
++----------+------+
+| keyboard |  200 |
+| SSD      |  900 |
++----------+------+
+2 rows in set (0.00 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_kharghar |
++--------------------+
+| customers          |
+| dept               |
+| emp                |
+| j                  |
+| orders             |
+| p                  |
+| pq                 |
+| s                  |
+| salespeople        |
+| sample             |
+| sdept              |
+| semp               |
+| spj                |
++--------------------+
+13 rows in set (0.21 sec)
+
+mysql> select * from dept;
++--------+----------+------+
+| deptno | deptname | loc  |
++--------+----------+------+
+|      1 | TRN      | Bby  |
+|      2 | EXP      | dlh  |
+|      3 | MKTG     | cal  |
++--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+------+--------+------+------+
+| empno | ename  | sal  | deptno | job  | MGR  |
++-------+--------+------+--------+------+------+
+|     1 | Arun   | 8000 |      1 | M    | 4    |
+|     2 | Ali    | 7000 |      1 | C    | 1    |
+|     3 | kirun  | 3000 |      1 | C    | 1    |
+|     5 | Thomas | 8000 |      2 | C    | 4    |
++-------+--------+------+--------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select e.ename,m.ename from e.emp,m.emp 
+    -> where (e.empno=m.empno);
+ERROR 1142 (42000): SELECT command denied to user 'shruti'@'localhost' for table 'emp'
+mysql> select e.ename,m.ename from emp e,emp m
+    -> where (e.empno=m.empno);
++--------+--------+
+| ename  | ename  |
++--------+--------+
+| Arun   | Arun   |
+| Ali    | Ali    |
+| kirun  | kirun  |
+| Thomas | Thomas |
++--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select e.ename,m.ename from e.emp,m.emp 
+    -> where (e.empno=m.mgr);
+ERROR 1142 (42000): SELECT command denied to user 'shruti'@'localhost' for table 'emp'
+mysql> select e.ename,m.ename from emp e,emp m
+    -> where (e.empno=m.mgr);
++-------+-------+
+| ename | ename |
++-------+-------+
+| Arun  | Ali   |
+| Arun  | kirun |
++-------+-------+
+2 rows in set (0.02 sec)
+
+mysql> select e.ename,m.ename from emp m,emp e
+    -> where (e.empno=m.mgr);
++-------+-------+
+| ename | ename |
++-------+-------+
+| Arun  | kirun |
+| Arun  | Ali   |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select e.ename,m.ename from emp e,emp m;
++--------+--------+
+| ename  | ename  |
++--------+--------+
+| Thomas | Arun   |
+| kirun  | Arun   |
+| Ali    | Arun   |
+| Arun   | Arun   |
+| Thomas | Ali    |
+| kirun  | Ali    |
+| Ali    | Ali    |
+| Arun   | Ali    |
+| Thomas | kirun  |
+| kirun  | kirun  |
+| Ali    | kirun  |
+| Arun   | kirun  |
+| Thomas | Thomas |
+| kirun  | Thomas |
+| Ali    | Thomas |
+| Arun   | Thomas |
++--------+--------+
+16 rows in set (0.00 sec)
+
+mysql> select e.ename,e.empno,m.ename,m.mgr from emp e,emp m;
++--------+-------+--------+------+
+| ename  | empno | ename  | mgr  |
++--------+-------+--------+------+
+| Thomas |     5 | Arun   | 4    |
+| kirun  |     3 | Arun   | 4    |
+| Ali    |     2 | Arun   | 4    |
+| Arun   |     1 | Arun   | 4    |
+| Thomas |     5 | Ali    | 1    |
+| kirun  |     3 | Ali    | 1    |
+| Ali    |     2 | Ali    | 1    |
+| Arun   |     1 | Ali    | 1    |
+| Thomas |     5 | kirun  | 1    |
+| kirun  |     3 | kirun  | 1    |
+| Ali    |     2 | kirun  | 1    |
+| Arun   |     1 | kirun  | 1    |
+| Thomas |     5 | Thomas | 4    |
+| kirun  |     3 | Thomas | 4    |
+| Ali    |     2 | Thomas | 4    |
+| Arun   |     1 | Thomas | 4    |
++--------+-------+--------+------+
+16 rows in set (0.00 sec)
+
+mysql> select e.ename,m.ename from emp e,emp m
+    -> where (m.mgr=e.empno);
++-------+-------+
+| ename | ename |
++-------+-------+
+| Arun  | Ali   |
+| Arun  | kirun |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select e.ename,m.ename from emp m,emp e
+    -> where (m.mgr=e.empno);
++-------+-------+
+| ename | ename |
++-------+-------+
+| Arun  | kirun |
+| Arun  | Ali   |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+------+--------+------+------+
+| empno | ename  | sal  | deptno | job  | MGR  |
++-------+--------+------+--------+------+------+
+|     1 | Arun   | 8000 |      1 | M    | 4    |
+|     2 | Ali    | 7000 |      1 | C    | 1    |
+|     3 | kirun  | 3000 |      1 | C    | 1    |
+|     5 | Thomas | 8000 |      2 | C    | 4    |
++-------+--------+------+--------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> Terminal close -- exit!

@@ -1,0 +1,445 @@
+mysql> select Status from s
+    -> group by Status;
++--------+
+| Status |
++--------+
+|     10 |
+|     20 |
+|     30 |
++--------+
+3 rows in set (0.02 sec)
+
+mysql> select Status from S
+    -> where Sname='Shruti';
++--------+
+| Status |
++--------+
+|     10 |
++--------+
+1 row in set (0.03 sec)
+
+//as table data were inserted by my choice as did not mention earlier so now questions also //modify just in name 
+
+Q.Display all the Suppliers with the same Status as the supplier, ‘Shruti’.  
+
+mysql> ^C
+mysql> select sname,status from s
+    -> where status=(select Status from s
+    -> where sname='Shruti');
++--------+--------+
+| sname  | status |
++--------+--------+
+| Shruti |     10 |
+| lala   |     10 |
++--------+--------+
+2 rows in set (0.02 sec)
+
+mysql> select * from emp;
++-------+--------+------+--------+------+------+
+| empno | ename  | sal  | deptno | job  | MGR  |
++-------+--------+------+--------+------+------+
+|     1 | Arun   | 8000 |      1 | M    | 4    |
+|     2 | Ali    | 7000 |      1 | C    | 1    |
+|     3 | kirun  | 3000 |      1 | C    | 1    |
+|     5 | Thomas | 8000 |      2 | C    | 4    |
++-------+--------+------+--------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> insert into emp
+    -> values
+    -> (4,'Miller',10000,1,'M',3);
+Query OK, 1 row affected (0.19 sec)
+
+Q.Display all the Employees in the same department as the employee ‘MILLER’.  
+mysql> select ename from emp 
+    -> where deptno=(select deptno from emp where ename='Miller');
++--------+
+| ename  |
++--------+
+| Arun   |
+| Ali    |
+| kirun  |
+| Miller |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select weight from p
+    -> where color='black';
++--------+
+| weight |
++--------+
+|     14 |
+|     15 |
++--------+
+2 rows in set (0.00 sec)
+
+Q.Display all the Parts which have more Weight than all the Red parts.  
+
+mysql> select pname,weight from p
+    -> where weight> all(select weight from p where color='black');
++--------+--------+
+| pname  | weight |
++--------+--------+
+| Screen |     16 |
++--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from j;
++------+-----------+--------+
+| J#   | Jname     | city   |
++------+-----------+--------+
+| J1   | CompLab   | Londan |
+| J2   | Office    | Paris  |
+| J3   | ITProject | Athens |
+| J4   | sunlab    | Londan |
++------+-----------+--------+
+4 rows in set (0.00 sec)
+
+Q.Display all the Projects going on in the same city as the project ‘TAPE’. 
+mysql> select jname,city from j
+    -> where city=(select city from j where jname='CompLab');
++---------+--------+
+| jname   | city   |
++---------+--------+
+| CompLab | Londan |
+| sunlab  | Londan |
++---------+--------+
+2 rows in set (0.00 sec)
+
+Q.Display all the Parts with Weight less than all the Green parts.   
+mysql> select Pname,weight 
+    -> from p
+    -> where weight<(select min(weight) from p where color='green');
++----------+--------+
+| Pname    | weight |
++----------+--------+
+| keyboard |     12 |
+| SSD      |     14 |
+| HDD      |     15 |
++----------+--------+
+3 rows in set (0.03 sec)
+
+mysql> select * from p;
++------+----------+-------+--------+--------+
+| P#   | Pname    | color | weight | city   |
++------+----------+-------+--------+--------+
+| P1   | keyboard | white |     12 | Londan |
+| P2   | SSD      | black |     14 | Paris  |
+| P3   | Screen   | green |     16 | Athens |
+| P4   | HDD      | black |     15 | Londan |
++------+----------+-------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select sname from s,spj
+    -> where (s.`S#`=spj.`S#`);
++----------+
+| sname    |
++----------+
+| Shruti   |
+| Gauri    |
+| Sanika   |
+| john doe |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select `S#` from spj 
+    -> where Qty=max(Qty);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select `S#` from spj
+    -> where Qty=(select max(Qty) from spj);
++------+
+| S#   |
++------+
+| S2   |
+| S4   |
++------+
+2 rows in set (0.00 sec)
+
+mysql> select sname from s,spj
+    -> where (s.`S#`=(select spj.`S#` from spj 
+    -> where Qty=(select max(Qty) from spj)));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select sname from s,spj
+    -> where (s.`S#`=any(select spj.`S#` from spj 
+    -> where Qty=(select max(Qty) from spj)));
++----------+
+| sname    |
++----------+
+| john doe |
+| Gauri    |
+| john doe |
+| Gauri    |
+| john doe |
+| Gauri    |
+| john doe |
+| Gauri    |
++----------+
+8 rows in set (0.02 sec)
+
+
+mysql> select sname from s join spj 
+    -> on s.`S#`=spj.`S#`
+    -> where (Qty=(select max(Qty) from spj));
++----------+
+| sname    |
++----------+
+| Gauri    |
+| john doe |
++----------+
+2 rows in set (0.00 sec)
+
+Q.Display the name of the Supplier who has sold the maximum Quantity (in one 
+sale).   
+mysql> select sname,Qty from s join spj 
+    -> on s.`S#`=spj.`S#`
+    -> where (Qty=(select max(Qty) from spj));
++----------+------+
+| sname    | Qty  |
++----------+------+
+| Gauri    |  900 |
+| john doe |  900 |
++----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+-------+--------+------+------+
+| empno | ename  | sal   | deptno | job  | MGR  |
++-------+--------+-------+--------+------+------+
+|     1 | Arun   |  8000 |      1 | M    | 4    |
+|     2 | Ali    |  7000 |      1 | C    | 1    |
+|     3 | kirun  |  3000 |      1 | C    | 1    |
+|     5 | Thomas |  8000 |      2 | C    | 4    |
+|     4 | Miller | 10000 |      1 | M    | 3    |
++-------+--------+-------+--------+------+------+
+5 rows in set (0.00 sec)
+
+Q. Display the name of the Employee with the minimum Salary.   
+mysql> select ename from emp 
+    -> where sal=(select min(sal) from emp);
++-------+
+| ename |
++-------+
+| kirun |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select max(Qty) from spj;
++----------+
+| max(Qty) |
++----------+
+|      900 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from spj;
++------+------+------+------+
+| S#   | P#   | J#   | Qty  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S2   | P2   | J2   |  900 |
+| S3   | P3   | J3   |  150 |
+| S4   | p4   | J4   |  900 |
++------+------+------+------+
+4 rows in set (0.00 sec)
+
+mysql> select sname from s join spj 
+    -> on s.`S#`=spj.`S#`
+    -> where spj.Qty=(select max(Qty) from spj);
++----------+
+| sname    |
++----------+
+| Gauri    |
+| john doe |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from s;
++------+----------+--------+--------+
+| S#   | Sname    | Status | City   |
++------+----------+--------+--------+
+| S1   | Shruti   |     10 | London |
+| S2   | Gauri    |     20 | Paris  |
+| S3   | Sanika   |     30 | Athens |
+| S4   | john doe |     20 | Paris  |
+| S5   | lala     |     10 | Athens |
+| S6   | Block    |     30 | London |
++------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+
+
+mysql> select s.sname,spj.Qty from s join spj 
+    -> on s.`S#`=spj.`S#`
+    -> group by s.sname,spj.Qty;
++----------+------+
+| sname    | Qty  |
++----------+------+
+| Shruti   |  200 |
+| Gauri    |  900 |
+| Sanika   |  150 |
+| john doe |  900 |
++----------+------+
+4 rows in set (0.00 sec)
+
+mysql> select sname,max(Qty)
+    -> from s join spj on 
+    -> s.`s#`=spj.`S#`
+    -> group by s.`S#`,s.sname;
++----------+----------+
+| sname    | max(Qty) |
++----------+----------+
+| Shruti   |      200 |
+| Gauri    |      900 |
+| Sanika   |      150 |
+| john doe |      900 |
++----------+----------+
+4 rows in set (0.01 sec)
+
+mysql> select max(Qty)
+    -> from s join spj on 
+    -> s.`s#`=spj.`S#`
+    -> group by s.`S#`,s.sname;
++----------+
+| max(Qty) |
++----------+
+|      200 |
+|      900 |
+|      150 |
+|      900 |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select max(Qty)
+    -> from s join spj on 
+    -> s.`s#`=spj.`S#`;
++----------+
+| max(Qty) |
++----------+
+|      900 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select max(Qty)
+    -> from s join spj on 
+    -> s.`s#`=spj.`S#`
+    -> group by s.`S#`;
++----------+
+| max(Qty) |
++----------+
+|      200 |
+|      900 |
+|      150 |
+|      900 |
++----------+
+4 rows in set (0.00 sec)
+
+
+
+Q. Display the name of the Supplier who has sold the maximum overall Quantity (sum 
+   of Sales).   
+
+mysql> SELECT s.sname
+    -> FROM s
+    -> JOIN spj ON s.`S#` = spj.`S#`
+    -> GROUP BY s.`S#`, s.sname
+    -> HAVING SUM(spj.Qty) = (
+    ->     SELECT MAX(total)
+    ->     FROM (
+    ->         SELECT SUM(Qty) AS total
+    ->         FROM spj
+    ->         GROUP BY `S#`
+    ->     ) t
+    -> );
++----------+
+| sname    |
++----------+
+| Gauri    |
+| john doe |
++----------+
+2 rows in set (0.02 sec)
+
+mysql> select * from emp;
++-------+--------+-------+--------+------+------+
+| empno | ename  | sal   | deptno | job  | MGR  |
++-------+--------+-------+--------+------+------+
+|     1 | Arun   |  8000 |      1 | M    | 4    |
+|     2 | Ali    |  7000 |      1 | C    | 1    |
+|     3 | kirun  |  3000 |      1 | C    | 1    |
+|     5 | Thomas |  8000 |      2 | C    | 4    |
+|     4 | Miller | 10000 |      1 | M    | 3    |
++-------+--------+-------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+----------+------+
+| deptno | deptname | loc  |
++--------+----------+------+
+|      1 | TRN      | Bby  |
+|      2 | EXP      | dlh  |
+|      3 | MKTG     | cal  |
++--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select count(*) from emp,dept 
+    -> where emp.deptno=dept.deptno;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select ename,count(deptno) from emp 
+    -> group by deptno;
+
+mysql> select count(deptno) from emp 
+    -> group by deptno;
++---------------+
+| count(deptno) |
++---------------+
+|             4 |
+|             1 |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> select deptno,count(deptno) from emp
+    -> group by deptno;
++--------+---------------+
+| deptno | count(deptno) |
++--------+---------------+
+|      1 |             4 |
+|      2 |             1 |
++--------+---------------+
+2 rows in set (0.00 sec)
+
+
+
+Q.Display the name of the Department with the maximum number of Employees.  
+mysql> select deptname from emp join dept on
+    -> emp.deptno=dept.deptno
+    -> group by dept.deptno,dept.deptname
+    -> order by count(*) desc
+    -> limit 1;
++----------+
+| deptname |
++----------+
+| TRN      |
++----------+
+1 row in set (0.02 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Terminal close -- exit!
+mysql> Terminal close -- exit!

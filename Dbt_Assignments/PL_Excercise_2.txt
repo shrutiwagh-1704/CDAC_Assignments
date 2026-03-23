@@ -1,0 +1,151 @@
+Q. Write a program that Selects from any table two character strings.  Your program should 
+then determine if one character string exists inside another character string.   
+
+mysql> CREATE TABLE strings (
+    ->     str1 VARCHAR(50),
+    ->     str2 VARCHAR(50)
+    -> );
+    -> //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO strings VALUES
+    -> ('hello world', 'world'),
+    -> ('database', 'base'),
+    -> ('mysql', 'sql'),
+    -> ('apple', 'cat');
+    -> //
+Query OK, 4 rows affected (0.04 sec)
+mysql> delimiter //
+mysql> create procedure check_string()
+    -> begin
+    -> select str1,str2,
+    -> if(str1 like concat('%',str2,'%'),'exist','not exist') as result
+    -> from strings;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.04 sec)
+mysql> call check_string();
+    -> //
++-------------+-------+-----------+
+| str1        | str2  | result    |
++-------------+-------+-----------+
+| hello world | world | exist     |
+| database    | base  | exist     |
+| mysql       | sql   | exist     |
+| apple       | cat   | not exist |
++-------------+-------+-----------+
+4 rows in set (0.03 sec)
+
+Q.Check if a given a year is a leap year. The condition is:- year should be (divisible by 4 
+and not divisible by 100) or (divisible by 4 and divisible by 400.). The year should be 
+Selected from some table.
+
+mysql> CREATE TABLE years (
+    ->     yr INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO years VALUES (2000), (1900), (2024), (2023);
+mysql> delimiter //
+mysql> create procedure chec_year()
+    -> begin
+    -> select yr,case
+    -> when (yr%4=0 and yr%100!=0 ) or (yr%4=0 and yr%400=0)
+    -> then
+    -> 'leap year'
+    -> else 'not leap yr'
+    -> end as check_year
+    -> from years;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call chec_year();
+    -> /
+    -> //
++------+-------------+
+| yr   | check_year  |
++------+-------------+
+| 2000 | leap year   |
+| 1900 | not leap yr |
+| 2024 | leap year   |
+| 2023 | not leap yr |
++------+-------------+
+4 rows in set (0.00 sec)
+
+Q.Select from any table three positive integers representing the sides of a triangle, and 
+determine whether they form a valid triangle. Hint: In a triangle, the sum of any two 
+sides must always be greater than the third side.   
+mysql> CREATE TABLE triangle (
+    ->     a INT,
+    ->     b INT,
+    ->     c INT
+    -> );
+    -> //
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO triangle VALUES (3, 4, 5), (1, 2, 3);
+    -> //
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE check_triangle()
+    -> BEGIN
+    ->     SELECT
+    ->         a, b, c,
+    ->         CASE
+    ->             WHEN a + b > c AND b + c > a AND a + c > b
+    ->                 THEN 'Valid Triangle'
+    ->             ELSE 'Invalid Triangle'
+    ->         END AS result
+    ->     FROM triangle;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> call check_traingle();
+ERROR 1305 (42000): PROCEDURE kharghar.check_traingle does not exist
+mysql> call check_triangle();
++------+------+------+------------------+
+| a    | b    | c    | result           |
++------+------+------+------------------+
+|    3 |    4 |    5 | Valid Triangle   |
+|    1 |    2 |    3 | Invalid Triangle |
++------+------+------+------------------+
+2 rows in set (0.00 sec)
+
+
+Q.Select from any table a number and determine whether it is within a given range (for 
+example, between 1 and 10). 
+mysql> CREATE TABLE numbers (
+    ->     num INT
+    -> );
+    -> //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO numbers VALUES (5), (12), (8), (0), (15); //   
+mysql> delimiter //
+mysql> create procedure range_determine()
+    -> select num ,
+    -> case
+    -> when num between 1 and 10 then 'within range'
+    -> else 'out of range'
+    -> end as result
+    -> from numbers;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call range_determine();
+    -> //
++------+--------------+
+| num  | result       |
++------+--------------+
+|    5 | within range |
+|   12 | out of range |
+|    8 | within range |
+|    0 | out of range |
+|   15 | out of range |
++------+--------------+
+5 rows in set (0.02 sec)
+
+Query OK, 0 rows affected (0.03 sec)
