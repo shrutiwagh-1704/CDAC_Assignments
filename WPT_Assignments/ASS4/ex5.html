@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        function fetchData(url, callback) {
+            setTimeout(() => {
+                let isError = false; // change to true to test error
+
+                if (isError) {
+                    callback("Error: URL not reachable", null);
+                } else {
+                    let response = "Response from " + url;
+                    callback(null, response);
+                }
+            }, 2000);
+        }
+
+        function processData(data, callback) {
+            setTimeout(() => {
+                let processed = data.toUpperCase(); // processing
+                callback(processed);
+            }, 1000);
+        }
+
+        // Nested callbacks
+        fetchData("my api", function (error, response) {
+            if (error) {
+                console.log(error);
+            } else {
+                processData(response, function (result) {
+                    console.log("Processed Data:", result);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

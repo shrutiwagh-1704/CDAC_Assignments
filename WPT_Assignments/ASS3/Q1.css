@@ -1,0 +1,30 @@
+.main-container
+{
+    width: 60%;
+    height: auto;
+    margin: 20vh auto;
+    
+    /* padding: 10px; */
+}
+
+#para1
+{
+    border: 1px solid antiquewhite;
+    margin-bottom: 8px;
+    padding: 10px;
+    font-size: 25px;
+    background-color: antiquewhite;
+    border-radius: 15px;
+    /* font-family: 'Times New Roman', Times, serif; */
+   
+}
+
+#btn
+{
+    margin-top: 20px ;
+    margin-left: 40%;
+    background-color:#73a6d5;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 15px;
+}

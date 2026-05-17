@@ -1,0 +1,257 @@
+.container
+{
+    width: 700px; 
+    margin:0 auto;
+    border: 1px solid black;
+    padding: 40px;
+}
+
+
+.heading
+{
+    display: flex;
+    /* border: 1px solid black; */
+    padding: 2px;
+    justify-content: space-between;
+}
+
+h1 span
+{
+    color: #327163;
+}
+
+.heading-left
+{
+    width: 60%;
+    /* border: 1px solid black; */
+}
+
+.heading-right
+{
+    /* border: 1px solid black; */
+}
+
+.heading-right .date
+{
+    /* float: right; */
+    font-size: 20px;
+    text-align: end;
+}
+
+.date-formate .box
+{
+    /* border: 1px solid black; */
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+
+.FullName input
+{
+    width: 82%;
+    margin-left: 8.2%;
+    height: 22px;
+}
+
+.FullName label
+{
+   
+    font-size: 14px;
+}
+
+.other-personal-info
+{
+    /* border: 1px solid black; */
+    display: flex;
+    /* height: 200px; */
+    justify-content: space-between;
+    gap: 50px;
+    margin-top: 15px;
+    
+}
+
+.inside-left
+{
+    /* border: 1px solid black; */
+    width: 50%;
+    
+     /* margin-left:  */
+}
+
+
+
+.inside-right
+{
+    /* border: 1px solid black; */
+    width: 50%;
+}
+
+
+
+
+.field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.field label {
+    width: 128px;
+    font-size: 14px;
+}
+
+.field input {
+    /* flex: 1; */
+    width: 65%;
+    height: 22px;
+}
+
+.date-formate-2
+{
+    width: 65%;
+    height: 22px;
+    display: flex;
+    gap: 5px;
+    
+}
+
+.date-formate-2 span
+{
+    font-size: 25px;
+}
+
+.newcheckbox
+{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+   
+}
+
+.radio-type label
+{
+    width: auto;
+}
+    
+
+.newcheckbox input {
+    width: 30px;     
+    height: 30px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid black;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.newcheckbox input:checked {
+    background-color:blue ;
+}
+
+.radio-type {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.address {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.address label {
+    width: 123px;
+    font-size: 14px;
+}
+
+.address input {
+    /* flex: 1; */
+    width: 82%;
+    height: 22px;
+}
+
+
+.Address-School
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.signs
+{
+    display: flex;
+    gap: 30px;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+.ad1
+{
+    border-top: 1px solid black;
+    padding: 8px;
+  
+
+}
+
+.end-address
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.highlight
+{
+    color: #327163;
+}
+
+.end
+{
+    margin-top: 25px;
+}
+
+.end p
+{
+    font-size: 120%;
+}
+
+.Address-School h3 {
+    position: relative;
+}
+
+.Address-School h3::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40%;        
+    border-bottom: 4px solid #327163;
+    margin-bottom: -3%;
+
+}
+
+.main-head h3{
+    position: relative;
+}
+
+.main-head h3::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 5%;        
+    border-bottom: 4px solid #327163;
+    margin-bottom: -1%;
+
+}
+
+
+
+
+
+
+
+

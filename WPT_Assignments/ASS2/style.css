@@ -1,0 +1,12 @@
+.hero-section {
+  height: 80vh;
+  background-image: url("https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1600&q=60");
+  background-size: cover;
+  background-position: center;
+}
+
+.img-fluid 
+{
+    height: 120px;
+    width: 100px;
+}

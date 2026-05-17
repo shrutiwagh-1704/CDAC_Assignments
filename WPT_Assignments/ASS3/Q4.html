@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        .main
+        {
+            width: 50%;
+            height: auto;
+            font-size: 40px;
+            color: white;
+            margin: 0 auto;
+            margin-top:20%;
+            background-color: black;
+            padding: 10px;
+
+        }
+
+        .main p
+        {
+            color: blue;
+        }
+        .main b
+        {
+            color: black;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <div class="main">
+         <p onmouseenter="handlecolor()" onmouseleave="togglecolor()">On hovering mouse here the bold words from following para will visible</p>
+        <b>We</b> have just started <b>this</b> section for the users (<b>beginner</b> to intermediate) who <b>want</b> to work with <b>various</b> JavaScript <b>problems</b> and write scripts online to <b>test</b> their JavaScript <b>skill.</b>
+    </div>
+
+    <script>
+
+        function handlecolor()
+        {
+            const bolds=document.getElementsByTagName("b");
+
+            for(b of bolds)
+            {
+                b.style.color="green";
+            }
+        }
+
+        function togglecolor()
+        {
+            const bolds=document.getElementsByTagName("b");
+
+            for(b of bolds)
+            {
+                b.style.color="black";
+            }
+        }
+        
+    </script>
+</body>
+</html>

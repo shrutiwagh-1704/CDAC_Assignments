@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background: white;
+    margin: 0;
+    padding: 0;
+}
+
+.resume {
+    width: 750px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid lightgray;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.header p {
+    margin: 3px 0;
+    font-size: 14px;
+}
+
+.summary {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid gray;
+    font-size: 14px;
+}
+
+.section-title {
+    background: lightgray;
+    padding: 5px;
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.content {
+    font-size: 14px;
+    padding: 10px;
+}
+
+.content h3 {
+    margin-bottom: 3px;
+}
+
+.date {
+    font-style: italic;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+ul {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.skills {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.skills p {
+    margin: 5px 0;
+}
+
+.declaration {
+    margin-top: 20px;
+    font-size: 13px;
+}

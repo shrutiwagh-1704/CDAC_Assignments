@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #myList
+        {
+            width:200px;
+            height:40px;
+            margin-left: 40%;
+            margin-top: 20%;
+        }
+
+        button
+        {
+            width:200px;
+            height:40px;
+            border: none;
+            font-size: 15px;
+            background-color: aquamarine;
+        }
+    </style>
+   
+
+</head>
+<body>
+    <select id="myList">
+        <option>C++</option>
+        <option>DBT</option>
+        <option>OOPJ</option>
+        <option>ADS</option>
+        <option>WPT</option>
+    </select>
+
+    <button onclick="removeItem()">Remove Selected</button>
+
+    <script>
+        function removeItem() 
+        {
+            const list = document.getElementById("myList");
+            const index = list.selectedIndex;
+
+            if (index !== -1) {
+                list.remove(index);
+            } else {
+                alert("Select an item first");
+            }
+        }
+    </script>
+</body>
+</html>
